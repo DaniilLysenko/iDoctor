@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+#wrapper {
+    background: url(../img/bg.jpg) no-repeat center;
+    background-size: cover;
+}
+.menu-open {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+.menu-open i {
+    font-size: 40pt;
+    font-weight: bold;
+}

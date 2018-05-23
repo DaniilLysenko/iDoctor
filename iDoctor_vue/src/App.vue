@@ -1,23 +1,32 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div id="wrapper">
+    <div class="menu-open" v-side-nav:demo="nav">
+      <v-icon>menu</v-icon>
+    </div>
+    <v-side-nav id="demo">
+        <ul>
+            <li v-for="n in 5" :key="n">
+                <a href="#!">Link</a>
+            </li>
+        </ul>
+    </v-side-nav>
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      nav: {
+        edge: 'right'
+      }
+    }
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import '/assets/css/main.css';
 </style>
