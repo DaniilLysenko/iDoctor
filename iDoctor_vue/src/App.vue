@@ -4,11 +4,12 @@
       <v-icon>menu</v-icon>
     </div>
     <v-side-nav id="demo">
-        <ul>
-            <li v-for="n in 5" :key="n">
-                <a href="#!">Link</a>
-            </li>
-        </ul>
+      <ul>
+        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
+        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
+        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
+        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
+      </ul>
     </v-side-nav>
     <router-view/>
   </div>

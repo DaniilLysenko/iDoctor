@@ -5,7 +5,7 @@ const Appointment = require('../models/appointment');
 const googlePlace = require('../config/googlePlaceApi');
 
 exports.near = async function(req, res) {
-    let radius = 100;
+    let radius = 300;
     var nearAptekas = {};
     while (true) {
         nearAptekas = await searchNearBy(googlePlace.API_KEY, radius, req.body.lat, req.body.lng);
@@ -16,7 +16,7 @@ exports.near = async function(req, res) {
     let apt = [];
     let i = 0;
     while(true) {
-        if (typeof nearAptekas.data.results[i] != 'undefined') {
+        if (nearAptekas.data.results[i] != undefined) {
             apt = await Pharmacy.findOne({name: nearAptekas.data.results[i].name}).exec();
             apt.medicaments.forEach((med) => {
                 if (req.body.needMeds.indexOf(med.name) >= 0) {
