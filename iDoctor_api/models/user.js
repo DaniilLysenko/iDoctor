@@ -21,6 +21,13 @@ const UserSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    birthday: {
+        type: Number,
+        required: true
+    },
+    hospital: {
+        type: String
     }
 },{
     versionKey: false

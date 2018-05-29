@@ -5,10 +5,10 @@
     </div>
     <v-side-nav id="demo">
       <ul>
-        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
-        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
-        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
-        <li><router-link to="/">Якась силка (ХЗ)</router-link></li>
+        <li><router-link to="/registration">Реєстрація</router-link></li>
+        <li><router-link to="/login">Вхід</router-link></li>
+        <li><router-link to="/simptom">Симптом</router-link></li>
+        <li><router-link to="/cart">Оформлення карточки</router-link></li>
       </ul>
     </v-side-nav>
     <router-view/>
