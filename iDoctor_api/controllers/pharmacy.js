@@ -5,33 +5,35 @@ const Appointment = require('../models/appointment');
 const googlePlace = require('../config/googlePlaceApi');
 
 exports.near = async function(req, res) {
-    let radius = 300;
+    let radius = 100;
     var nearAptekas = {};
     while (true) {
         nearAptekas = await searchNearBy(googlePlace.API_KEY, radius, req.body.lat, req.body.lng);
-        if (nearAptekas.data.status != 'ZERO_RESULTS') break;
+        if (nearAptekas.data.status != 'ZERO_RESULTS' && nearAptekas.data.results.length > 1) break;
         else radius += 100;
     }
-    let m = [];
-    let apt = [];
-    let i = 0;
-    while(true) {
-        if (nearAptekas.data.results[i] != undefined) {
-            apt = await Pharmacy.findOne({name: nearAptekas.data.results[i].name}).exec();
-            apt.medicaments.forEach((med) => {
-                if (req.body.needMeds.indexOf(med.name) >= 0) {
-                    m.push({
-                        apt_name: apt.name, apt_place: apt.place, apt_time: apt.opening_hours, m_name: med.name,
-                        m_available: med.available ? 'Є в наявності' : 'Немає в наявності', m_price: med.price
-                    });
-                }
-            });
-        } else {
-            break;
-        }
-        i++;
-    }
-    res.send({apt:nearAptekas.data.results,med: m});
+    console.log(radius);
+    res.send({apt: nearAptekas.data.results});
+    // let m = [];
+    // let apt = [];
+    // let i = 0;
+    // while(true) {
+    //     if (nearAptekas.data.results[i] != undefined) {
+    //         apt = await Pharmacy.findOne({name: nearAptekas.data.results[i].name}).exec();
+    //         apt.medicaments.forEach((med) => {
+    //             if (req.body.needMeds.indexOf(med.name) >= 0) {
+    //                 m.push({
+    //                     apt_name: apt.name, apt_place: apt.place, apt_time: apt.opening_hours, m_name: med.name,
+    //                     m_available: med.available ? 'Є в наявності' : 'Немає в наявності', m_price: med.price
+    //                 });
+    //             }
+    //         });
+    //     } else {
+    //         break;
+    //     }
+    //     i++;
+    // }
+    // res.send({apt:nearAptekas.data.results,med: m});
 }
 
 exports.Postsimptoms = async function(req, res) {
