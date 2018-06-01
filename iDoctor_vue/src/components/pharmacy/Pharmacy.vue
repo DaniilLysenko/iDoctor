@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     name: 'Pharmacy',
     methods: {
@@ -46,7 +45,7 @@ export default {
                 lat: 49.4225237,
                 lng: 32.0950475
             }
-            axios.post('http://localhost:3000/pharmacy/near', opt)
+            this.axios.post('http://localhost:3000/pharmacy/near', opt)
             .then(response => {
                 console.log(response);
                 response.data.apt.forEach((apt) => {
