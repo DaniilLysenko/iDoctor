@@ -6,6 +6,7 @@ const PharmacyCntrl = require('../controllers/pharmacy');
 
 router.post('/user/reg',UserCntrl.reg);
 router.post('/user/login',checkAuth,UserCntrl.login);
+router.get('/user/profile',checkAuth,UserCntrl.profile);
 router.post('/pharmacy/near', PharmacyCntrl.near);
 router.get('/pharmacy/simptoms', PharmacyCntrl.simptoms);
 router.post('/pharmacy/simptoms', PharmacyCntrl.Postsimptoms);

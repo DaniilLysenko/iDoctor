@@ -67,7 +67,17 @@ exports.login = async function(req, res) {
         res.send({errors:errors});
     } else {
         jwt.sign({user: user._id},'secretkey',(err, token) => {
-            res.send({success: "OK", token});
+            res.send({success: "OK", token: token});
         });  
+    }
+}
+
+exports.profile = async function(req, res) {
+    try {
+        const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey');
+        const user = await User.findOne({_id: decoded.user}).exec();
+        res.send({status: 200, res: user});
+    } catch(err) {
+        res.send({status: 403});
     }
 }
