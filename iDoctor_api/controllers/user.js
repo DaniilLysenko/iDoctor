@@ -81,3 +81,14 @@ exports.profile = async function(req, res) {
         res.send({status: 403});
     }
 }
+
+exports.hospital = async function(req, res) {
+    if (req.body.hospital == '') {
+        res.send({status: 403});
+    } else {
+        const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey');
+        User.update({_id: decoded.user},{$set: {hospital: req.body.hospital}}, (err, user) => {
+            res.send({status: 200});
+        });
+    }
+}

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const request = require('request');
 const Simptom = require('../models/simptom');
 const Pharmacy = require('../models/pharmacy');
 const Appointment = require('../models/appointment');
@@ -73,6 +74,11 @@ exports.appointment = async function(req, res) {
         const ap = await Appointment.create({fio: req.body.fio,doctor_name:req.body.doctor_name,day_ap:req.body.writeDay,time_ap:req.body.time,report:req.body.report});
         res.send({status: 200});
     }
+}
+
+exports.hospital = function(req, res) {
+    axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent('лікарні Черкаси')}&key=AIzaSyDTDIeLUtzT3Vq1Bblqs-Kl5sjugLMOJNM&language=uk`)
+    .then(response => res.send({result: response.data.results}));
 }
 
 function searchNearBy(API_KEY, radius, lat, lng){

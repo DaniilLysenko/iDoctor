@@ -28,7 +28,12 @@ const UserSchema = mongoose.Schema({
         required: true
     },
     hospital: {
-        type: String
+        type: String,
+        default: ''
+    },
+    type: {
+        type: String,
+        default: 'user'
     }
 },{
     versionKey: false

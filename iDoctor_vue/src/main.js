@@ -11,7 +11,7 @@ Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 
 axios.interceptors.request.use(config => {
-  config.headers.common['Authorization'] = 'Bearer: ' + store.state.jwt;
+  config.headers['Authorization'] = 'Bearer: ' + store.state.jwt;
   return config;
 });
 

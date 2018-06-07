@@ -1,10 +1,15 @@
 <template>
     <main>
-        {{ user }} <br>
-        <div class="hospital">
-            <p>Ви знаходитесь в місті {{town}}</p>
-            <p>Оберіть вашу лікарню із списку нижче</p>
+        <div class="hospital" v-if="user.hospital == ''">
+            <form @submit.prevent="chooseHosp">
+                <p>Оберіть вашу лікарню</p>
+                <select v-model="hosp">
+                    <option v-for="h in hospitals" :key="h" :value="h">{{h}}</option>
+                </select>
+                <v-btn type="submit">Обрати</v-btn>
+            </form>
         </div>
+        <router-link to="/card">Завести карточку</router-link> 
     </main>
 </template>
 
@@ -14,7 +19,8 @@ export default {
   data() {
       return {
           user: {},
-          town: ''
+          hospitals: ['Міська лікарня №1','Міська лікарня №2','Міська лікарня №3'],
+          hosp: 'Міська лікарня №1'
       }
   },
   methods: {
@@ -36,6 +42,14 @@ export default {
                 console.log(error);
             });
         });
+    },
+    chooseHosp() {
+        this.axios.post('http://localhost:3000/user/hospital',{hospital: this.hosp})
+        .then(response => {
+            if (response.data.status == 200) {
+                this.user.hospital = this.hosp;
+            }
+        })
     }
   },
   mounted: async function() {
@@ -46,12 +60,6 @@ export default {
             this.user = response.data.res;
         }
     });
-    let position = await this.findUserPosition();
-    let geocoder = new google.maps.Geocoder();
-    geocoder.geocode({'location': {lat:position.coords.latitude,lng:position.coords.longitude}}, (results, status) => {
-      this.town = results[3].address_components[0].short_name;
-    });
-    
   }
 }
 </script>
