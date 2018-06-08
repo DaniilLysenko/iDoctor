@@ -28,7 +28,11 @@
             </div>
             <div class="input-field">
                 <v-text-input name="birthdayY" id="birthdayY" v-model="birthdayY"></v-text-input>
-                <label for="birthdayY">Рік народження</label>
+                <label for="birthdayY">Повна дата народження (день.місяць.рік)</label>
+            </div>
+            <div class="input-field">
+                <v-text-input name="placeL" id="placeL" v-model="placeL"></v-text-input>
+                <label for="placeL">Міце проживання (вулиця, квартира)</label>
             </div>
             <v-btn type="submit">Реєстрація</v-btn>
         </form>
@@ -40,12 +44,20 @@ export default {
   name: 'Registration',
   data() {
     return {
-        fName: '',sName: '',mName: '',email: '',password: '', birthdayY: '',errors: []
+        fName: '',sName: '',mName: '',email: '',password: '', birthdayY: '', placeL: '', errors: []
     }
   },
   methods: {
     reg() {
-        let opt = {fName:this.fName,sName:this.sName,mName:this.mName,email:this.email,password:this.password,birthdayY:this.birthdayY}
+        let opt = {
+            fName: this.fName,
+            sName: this.sName,
+            mName: this.mName,
+            email: this.email,
+            password: this.password,
+            birthdayY: this.birthdayY,
+            placeL: this.placeL
+        };
         this.axios.post('http://localhost:3000/user/reg', opt)
         .then(response => {
             if (response.data.success) {

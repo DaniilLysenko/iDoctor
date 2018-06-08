@@ -9,7 +9,11 @@
                 <v-btn type="submit">Обрати</v-btn>
             </form>
         </div>
-        <router-link to="/card">Завести карточку</router-link> 
+        <button @click="createCard" v-if="user.hospital != ''" class="btn btn-card">Завести карточку</button>
+        <hr>
+        <div class="personal_info">
+            <p>Особиста інформація</p>
+        </div>
     </main>
 </template>
 
@@ -50,6 +54,10 @@ export default {
                 this.user.hospital = this.hosp;
             }
         })
+    },
+    createCard() {
+        this.axios.post('http://localhost:3000/card/card-create')
+        .then(response => {});
     }
   },
   mounted: async function() {

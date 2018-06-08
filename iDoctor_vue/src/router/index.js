@@ -5,8 +5,9 @@ import Pharmacy from '@/components/pharmacy/Pharmacy'
 import Registration from '@/components/user/Registration'
 import Login from '@/components/user/Login'
 import Profile from '@/components/user/Profile'
+import Card from '@/components/card/Card'
 import Simptom from '@/components/simptom/Simptom'
-import store from '../store/store.js'
+import mdlw from '../middleware/mdlw.js'
 
 Vue.use(Router)
 
@@ -27,25 +28,13 @@ export default new Router({
       path: '/registration',
       name: 'Registration',
       component: Registration,
-      beforeEnter: (to, from, next) => {
-        if (store.state.isAuth != false) {
-          next('/profile');
-        } else {
-          next();
-        }
-      }
+      beforeEnter: mdlw.redirectIfAuth
     },
     {
       path: '/login',
       name: 'Login',
       component: Login,
-      beforeEnter: (to, from, next) => {
-        if (store.state.isAuth != false) {
-          next('/profile');
-        } else {
-          next();
-        }
-      }
+      beforeEnter: mdlw.redirectIfAuth
     },
     {
       path: '/simptom',
@@ -56,13 +45,13 @@ export default new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile,
-      beforeEnter: (to, from, next) => {
-        if (store.state.isAuth != false) {
-          next();
-        } else {
-          next('/login');
-        }
-      }
+      beforeEnter: mdlw.checkAuth
+    },
+    {
+      path: '/card',
+      name: 'Card',
+      component: Card,
+      beforeEnter: mdlw.checkAuth     
     }
   ]
 })

@@ -1,5 +1,4 @@
 const axios = require('axios');
-const request = require('request');
 const Simptom = require('../models/simptom');
 const Pharmacy = require('../models/pharmacy');
 const Appointment = require('../models/appointment');

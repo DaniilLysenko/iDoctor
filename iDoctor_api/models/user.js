@@ -24,7 +24,11 @@ const UserSchema = mongoose.Schema({
         required: true
     },
     birthday: {
-        type: Number,
+        type: String,
+        required: true
+    },
+    placeLive: {
+        type: String,
         required: true
     },
     hospital: {

@@ -4,33 +4,33 @@ const jwt = require('jsonwebtoken');
 
 exports.reg = async function(req, res) {
     let errors = [];
-    if (req.body.fName == "" || req.body.fName == undefined) {
+    if (req.body.fName.trim() == "" || req.body.fName == undefined) {
         errors.push("Введіть ім'я");
     }
-    if (req.body.sName == "" || req.body.sName == undefined) {
+    if (req.body.sName.trim() == "" || req.body.sName == undefined) {
         errors.push("Введіть прізвище");
     }
-    if (req.body.mName == "" || req.body.mName == undefined) {
+    if (req.body.mName.trim() == "" || req.body.mName == undefined) {
         errors.push("Введіть по-батькові");
     }
-    if (req.body.email == "" || req.body.email == undefined) {
+    if (req.body.email.trim() == "" || req.body.email == undefined) {
         errors.push("Введіть email");
     } else {
         if (!/\w+@\w+\.\w/i.test(req.body.email)) {
             errors.push('Неправильний формат email');
         }
     }
-    if (isNaN(parseInt(req.body.birthdayY))) {
-        errors.push("Введіть день народження");
+    if (req.body.placeL.trim() == "" || req.body.placeL == undefined) {
+        errors.push("Введіть ваше місце проживання");
+    }
+    if (req.body.birthdayY.trim() == "" || req.body.birthdayY == undefined) {
+        errors.push("Введіть вашу повну дату народження");
     } else {
-        if (req.body.birthdayY.length < 4) {
-            errors.push("Неправильний формат року");
-        }
-        if (parseInt(req.body.birthdayY) > new Date().getFullYear()) {
-            errors.push("Неправильний формат року");
+        if (!/^[0-9]{2}\.[0-1]{1}[1-9]{1}\.[1-2]{1}[0]{1}[0-2]{1}[0-9]{1}$/i.test(req.body.birthdayY)) {
+            errors.push("Введіть вашу повну дату народження");
         }
     }
-    if (req.body.password == "" || req.body.password == undefined) {
+    if (req.body.password.trim() == "" || req.body.password == undefined) {
         errors.push("Введіть пароль");
     } else {
         if (req.body.password.length < 6) {
@@ -41,7 +41,15 @@ exports.reg = async function(req, res) {
         res.send({errors:errors});
     } else {
         let hashedPassw = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-        const us = await User.create({firstname: req.body.fName, lastname: req.body.sName, middlename: req.body.mName, email: req.body.email, password: hashedPassw, birthday: req.body.birthdayY});
+        const us = await User.create({
+            firstname: req.body.fName, 
+            lastname: req.body.sName, 
+            middlename: req.body.mName, 
+            email: req.body.email, 
+            password: hashedPassw, 
+            birthday: req.body.birthdayY,
+            placeLive: req.body.placeL
+        });
         res.send({status: 200, success: "OK"});
     }
 }
