@@ -8,6 +8,7 @@ import Profile from '@/components/user/Profile'
 import Card from '@/components/card/Card'
 import Simptom from '@/components/simptom/Simptom'
 import AdminPanel from '@/components/admin/AdminPanel'
+import DoctorCreate from '@/components/doctor/DoctorCreate'
 import mdlw from '../middleware/mdlw.js'
 
 Vue.use(Router)
@@ -59,6 +60,12 @@ export default new Router({
       name: 'AdminPanel',
       component: AdminPanel,
       beforeEnter: mdlw.checkAdmin
+    },
+    {
+      path: '/doctor/create',
+      name: 'DoctorCreate',
+      component: DoctorCreate,
+      beforeEnter: mdlw.redirectIfAuth
     }
   ]
 })
