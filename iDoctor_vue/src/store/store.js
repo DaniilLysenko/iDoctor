@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        jwt: '', isAuth: false
+        jwt: '', isAuth: false, type: ''
     },
     mutations: {
         setJwt(state, token) {
@@ -14,6 +14,9 @@ export default new Vuex.Store({
         },
         setAuth(state, val) {
             state.isAuth = val;
+        },
+        setUserType(state, val) {
+            state.type = val;
         }
     },
     plugins: [createPersistedState()]

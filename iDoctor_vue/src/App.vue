@@ -27,6 +27,7 @@ export default {
     logout() {
       this.$store.commit('setJwt', '');
       this.$store.commit('setAuth', false);
+      this.$store.commit('setUserType', '');
       this.$router.push('/');
     }
   }

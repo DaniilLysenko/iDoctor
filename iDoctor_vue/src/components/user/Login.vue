@@ -34,6 +34,7 @@ export default {
       .then(response => {
         if (response.data.success) {
           this.$store.commit('setJwt', response.data.token);
+          this.$store.commit('setUserType', response.data.type);
           this.$store.commit('setAuth', true);
           this.$router.push('/profile');
         }

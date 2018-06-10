@@ -7,6 +7,7 @@ import Login from '@/components/user/Login'
 import Profile from '@/components/user/Profile'
 import Card from '@/components/card/Card'
 import Simptom from '@/components/simptom/Simptom'
+import AdminPanel from '@/components/admin/AdminPanel'
 import mdlw from '../middleware/mdlw.js'
 
 Vue.use(Router)
@@ -52,6 +53,12 @@ export default new Router({
       name: 'Card',
       component: Card,
       beforeEnter: mdlw.checkAuth     
+    },
+    {
+      path: '/admin/panel',
+      name: 'AdminPanel',
+      component: AdminPanel,
+      beforeEnter: mdlw.checkAdmin
     }
   ]
 })

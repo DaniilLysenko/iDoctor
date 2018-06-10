@@ -56,7 +56,7 @@ exports.reg = async function(req, res) {
 
 exports.login = async function(req, res) {
     let errors = [];
-    const user = await User.findOne({email: req.body.email},'_id password').exec();
+    const user = await User.findOne({email: req.body.email},'_id password type').exec();
     if (req.body.email == "" || req.body.email == undefined) {
         errors.push("Введіть email");
     }
@@ -74,9 +74,9 @@ exports.login = async function(req, res) {
     if (errors.length > 0) {
         res.send({errors:errors});
     } else {
-        jwt.sign({user: user._id},'secretkey',(err, token) => {
-            res.send({success: "OK", token: token});
-        });  
+        jwt.sign({user: user._id, type: user.type}, 'secretkey',(err, token) => {
+            res.send({success: "OK", token: token, type: user.type}); 
+        })
     }
 }
 

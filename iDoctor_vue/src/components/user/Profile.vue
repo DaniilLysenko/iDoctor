@@ -10,11 +10,11 @@
             </form>
         </div>
         <button @click="createCard" v-if="user.hospital != '' && user.type == 'user'" class="btn btn-card">Завести карточку</button>
-        <hr>
-        <div class="personal_info">
+        <br>
+        <div class="personal_info" v-if="user.type == 'user'">
             <p>Особиста інформація</p>
         </div>
-        <p v-if="user.type == 'admin'">Опа опа да ти адмін</p>
+        <router-link v-if="user.type == 'admin'" to="/admin/panel" class="btn">Адмінка</router-link>
     </main>
 </template>
 
