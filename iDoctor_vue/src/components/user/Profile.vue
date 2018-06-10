@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="hospital" v-if="user.hospital == ''">
+        <div class="hospital" v-if="user.hospital == '' && user.type == 'user'">
             <form @submit.prevent="chooseHosp">
                 <p>Оберіть вашу лікарню</p>
                 <select v-model="hosp">
@@ -9,11 +9,12 @@
                 <v-btn type="submit">Обрати</v-btn>
             </form>
         </div>
-        <button @click="createCard" v-if="user.hospital != ''" class="btn btn-card">Завести карточку</button>
+        <button @click="createCard" v-if="user.hospital != '' && user.type == 'user'" class="btn btn-card">Завести карточку</button>
         <hr>
         <div class="personal_info">
             <p>Особиста інформація</p>
         </div>
+        <p v-if="user.type == 'admin'">Опа опа да ти адмін</p>
     </main>
 </template>
 
@@ -56,8 +57,10 @@ export default {
         })
     },
     createCard() {
-        this.axios.post('http://localhost:3000/card/card-create')
-        .then(response => {});
+        this.axios.post('http://localhost:3000/card/create-card',{})
+        .then(response => {
+            if (response.data.status == 200) this.$router.push('/card');
+        });
     }
   },
   mounted: async function() {

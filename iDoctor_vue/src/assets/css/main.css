@@ -30,3 +30,6 @@ select {
 .btn-card,hr {
     margin-bottom: 20px;
 }
+.logout {
+    margin: 0 30px;
+}
