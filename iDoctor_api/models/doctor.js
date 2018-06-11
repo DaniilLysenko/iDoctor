@@ -2,15 +2,7 @@ const mongoose = require('mongoose');
 
 //User Schema
 const DoctorSchema = mongoose.Schema({
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
-        type: String,
-        required: true
-    },
-    middlename: {
+    user_id: {
         type: String,
         required: true
     },
@@ -21,6 +13,10 @@ const DoctorSchema = mongoose.Schema({
     type: {
         type: String,
         required: true
+    },
+    rating: {
+        type: String,
+        default: ''
     }
 },{
     versionKey: false

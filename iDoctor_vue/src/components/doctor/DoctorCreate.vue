@@ -1,5 +1,10 @@
 <template>
     <main>
+        <div class="alert alert-error">
+            <ul>
+                <li v-for="err in errors" :key="err">{{err}}</li>
+            </ul>
+        </div>
         <div class="create-doctor">
             <form @submit.prevent="createDoctor">
                 <div class="input-field">
@@ -53,7 +58,8 @@
                 sName: '',
                 mName: '',
                 email: '',
-                password: ''
+                password: '',
+                errors: []
             }
         },
         methods: {
@@ -69,7 +75,11 @@
                 };
                 this.axios.post('http://localhost:3000/doctor/create', opt)
                 .then(response => {
-                    console.log(response);
+                    if (response.data.status == 200) {
+                        this.$router.push('login');
+                    } else {
+                        this.errors = response.data.errors;
+                    }
                 });
             }
         }

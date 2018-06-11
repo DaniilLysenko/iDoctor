@@ -25,11 +25,11 @@ const UserSchema = mongoose.Schema({
     },
     birthday: {
         type: String,
-        required: true
+        default: ''
     },
     placeLive: {
         type: String,
-        required: true
+        default: ''
     },
     hospital: {
         type: String,

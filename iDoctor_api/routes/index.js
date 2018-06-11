@@ -5,6 +5,7 @@ const UserCntrl = require('../controllers/user');
 const PharmacyCntrl = require('../controllers/pharmacy');
 const CardCntrl = require('../controllers/card');
 const AdminCntrl = require('../controllers/admin');
+const DoctorCntrl = require('../controllers/doctor');
 
 const mdlw = require('../middleware/mdlw');
 
@@ -29,6 +30,8 @@ router.post('/card/create-card', mdlw.checkAuth, CardCntrl.create);
 
 // AdminController route-methods
 
-router.post('/admin/doctor', mdlw.checkAdmin, AdminCntrl.createDoctor);
+// DoctorController route-methods
+
+router.post('/doctor/create', DoctorCntrl.create)
 
 module.exports = router;
