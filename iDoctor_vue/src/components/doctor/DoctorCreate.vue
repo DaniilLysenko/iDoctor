@@ -76,7 +76,7 @@
                 this.axios.post('http://localhost:3000/doctor/create', opt)
                 .then(response => {
                     if (response.data.status == 200) {
-                        this.$router.push('login');
+                        this.$router.push('/login');
                     } else {
                         this.errors = response.data.errors;
                     }

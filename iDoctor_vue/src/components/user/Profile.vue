@@ -9,23 +9,32 @@
                 <v-btn type="submit">Обрати</v-btn>
             </form>
         </div>
-        <button @click="createCard" v-if="user.hospital != '' && user.type == 'user'" class="btn btn-card">Завести карточку</button>
-        <br>
-        <div class="personal_info" v-if="user.type == 'user'">
-            <p>Особиста інформація</p>
+        <button @click="createCard" v-if="user.hospital != '' && user.type == 'user' && !card" class="btn btn-card">Завести карточку</button>
+        <div class="push-wrapper" v-if="!hasSubscription">
+            <button class="btn" @click="subscribe">Підписатися на сповіщення</button>
         </div>
-        <router-link v-if="user.type == 'admin'" to="/admin/panel" class="btn">Адмінка</router-link>
+        <div class="choose_doctor">
+            <div class="input-field">
+                <v-text-input name="pName" id="pName" v-model="pName"></v-text-input>
+                <label for="pName">Ім'я лікаря</label>
+            </div>
+        </div>
     </main>
 </template>
 
 <script>
+import config from '../../sw/config.js';
+import swMethods from '../../sw/methods.js'
 export default {
   name: 'Profile',
   data() {
       return {
           user: {},
           hospitals: ['Міська лікарня №1','Міська лікарня №2','Міська лікарня №3'],
-          hosp: 'Міська лікарня №1'
+          hosp: 'Міська лікарня №1',
+          serviceWorkerRegistration: null,
+          hasSubscription: true,
+          card: true
       }
   },
   methods: {
@@ -61,15 +70,43 @@ export default {
         .then(response => {
             if (response.data.status == 200) this.$router.push('/card');
         });
+    },
+    subscribe() {
+        this.serviceWorkerRegistration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: swMethods.urlB64ToUint8Array(config.appServerKey)
+        })
+        .then(subscription => {
+            this.axios.post('http://localhost:3000/user/push',{subscription: subscription})
+            .then(response => {
+                this.hasSubscription = true;
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    },
+    push() {
+        this.axios.post('http://localhost:3000/user/send',{})
+        .then(response => console.log(response));
     }
   },
-  mounted: async function() {
-    await this.loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDTDIeLUtzT3Vq1Bblqs-Kl5sjugLMOJNM&language=uk&libraries=places');
+  mounted: function() {
     this.axios.get('http://localhost:3000/user/profile')
     .then(response => {
         if (response.data.status == 200) {
             this.user = response.data.res;
+            this.card = response.data.card;
+            if (response.data.res.push_subscribe) {
+                this.hasSubscription = true;
+            } else {
+                this.hasSubscription = false;
+            }
         }
+    });
+    navigator.serviceWorker.register('/static/sw.js')
+    .then(sw => {
+        this.serviceWorkerRegistration = sw;
     });
   }
 }

@@ -14,7 +14,10 @@ const mdlw = require('../middleware/mdlw');
 router.post('/user/reg', UserCntrl.reg);
 router.post('/user/login', mdlw.checkAuth, UserCntrl.login);
 router.get('/user/profile', mdlw.checkAuth, UserCntrl.profile);
+router.get('/user/get', mdlw.checkAuth, UserCntrl.get);
 router.post('/user/hospital', mdlw.checkAuth, UserCntrl.hospital);
+router.post('/user/push', mdlw.checkAuth, UserCntrl.push);
+router.post('/user/send', mdlw.checkAuth, UserCntrl.send);
 
 // PharmacyController route-methods
 
@@ -27,11 +30,14 @@ router.post('/pharmacy/appointment', PharmacyCntrl.appointment);
 // CardController route-methods
 
 router.post('/card/create-card', mdlw.checkAuth, CardCntrl.create);
+router.get('/card/check', mdlw.checkAuth, CardCntrl.check);
 
 // AdminController route-methods
 
 // DoctorController route-methods
 
-router.post('/doctor/create', DoctorCntrl.create)
+router.post('/doctor/create', DoctorCntrl.create);
+router.get('/doctor/patients', DoctorCntrl.patients);
+router.post('/doctor/add-record', DoctorCntrl.addRecord);
 
 module.exports = router;

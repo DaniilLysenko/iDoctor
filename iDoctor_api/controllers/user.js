@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Card = require('../models/card');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -48,7 +49,8 @@ exports.reg = async function(req, res) {
             email: req.body.email, 
             password: hashedPassw, 
             birthday: req.body.birthdayY,
-            placeLive: req.body.placeL
+            placeLive: req.body.placeL,
+            fullname: req.body.sName + ' ' + req.body.fName + ' ' +req.body.mName
         });
         res.send({status: 200, success: "OK"});
     }
@@ -84,7 +86,18 @@ exports.profile = async function(req, res) {
     try {
         const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey');
         const user = await User.findOne({_id: decoded.user}).exec();
-        res.send({status: 200, res: user});
+        let card = await Card.findOne({user_id: decoded.user},'_id').exec();
+        card = card == null ? false : true;
+        res.send({status: 200, res: user, card: card});
+    } catch(err) {
+        res.send({status: 403});
+    }
+}
+
+exports.get = (req, res) => {
+    try {
+        const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey');
+        res.send({status: 200, id: decoded.user});
     } catch(err) {
         res.send({status: 403});
     }
@@ -99,4 +112,45 @@ exports.hospital = async function(req, res) {
             res.send({status: 200});
         });
     }
+}
+
+exports.push = async function(req, res) {
+    const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey');
+    await User.update({_id: decoded.user},{$set: {
+        push_subscribe: true,
+        push_endpoint: req.body.subscription.endpoint,
+        push_key_p256dh: req.body.subscription.keys.p256dh,
+        push_key_auth: req.body.subscription.keys.auth
+    }});
+}
+
+exports.send = async function(req, res) {
+    const decoded = jwt.verify(req.headers['authorization'].split(' ')[1], 'secretkey');
+    const user = await User.findOne({_id: decoded.user},'push_endpoint push_key_p256dh push_key_auth').exec();
+    const subscription = {
+        endpoint: user.push_endpoint,
+        keys: {
+          p256dh: user.push_key_p256dh,
+          auth: user.push_key_auth
+        }
+    };
+    const payload = JSON.stringify({
+        title: 'Welcome',
+        body: 'its our first notification',
+        icon: 'http://www.myiconfinder.com/uploads/iconsets/256-256-76170ff571088c191d2cf8e74e911e11.png'
+    });
+    const options = {
+        TTL: 3600
+    };
+    webPush.sendNotification(
+        subscription, 
+        payload,
+        options
+    )
+    .then(() => {
+        return res.send({status: 200});
+    })
+    .catch(err => {
+        return res.send({status: 500, err: {err_msg: err}});
+    }); 
 }

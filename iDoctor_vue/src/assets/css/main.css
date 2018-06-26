@@ -30,6 +30,11 @@ select {
 .btn-card,hr {
     margin-bottom: 20px;
 }
-.menu .btn {
-    margin: 0 30px;
+.menu .logout {
+    margin: 10px 30px 0 30px;
+}
+
+.doctable th, .doctable td {
+    border: 1px solid black;
+    border-collapse: collapse;
 }

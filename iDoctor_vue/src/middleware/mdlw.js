@@ -1,4 +1,5 @@
 import store from '../store/store.js'
+
 export default {
     redirectIfAuth: (to, from, next) => {
         if (store.state.isAuth != false) {
@@ -7,7 +8,14 @@ export default {
             next();
         }
     },
-    checkAuth: (to, from, next) => {
+    checkUser: (to, from, next) => {
+        if (store.state.isAuth != false && store.state.type == 'user') {
+            next();
+        } else {
+            next('/login');
+        }
+    },
+    checkCardOwner: (to, from, next) => {
         if (store.state.isAuth != false) {
             next();
         } else {
@@ -24,5 +32,12 @@ export default {
         } else {
             next('/login');
         }
+    },
+    checkDoctor: (to, from, next) => {
+        if (store.state.isAuth != false && store.state.type == 'doctor') {
+            next();
+        } else {
+            next('/login');
+        }      
     }
 }

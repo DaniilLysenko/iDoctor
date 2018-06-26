@@ -36,7 +36,13 @@ export default {
           this.$store.commit('setJwt', response.data.token);
           this.$store.commit('setUserType', response.data.type);
           this.$store.commit('setAuth', true);
-          this.$router.push('/profile');
+          if (response.data.type == 'doctor') {
+            this.$router.push('/cabinet');
+          } else if (response.data.type == 'user') {
+            this.$router.push('/profile');
+          } else {
+            this.$router.push('/admin/panel');
+          }
         }
       });
     }

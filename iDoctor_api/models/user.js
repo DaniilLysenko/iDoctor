@@ -14,6 +14,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    fullname: {
+        type: String,
+        default: this.lastname + ' ' + this.firstname + ' ' + this.middlename
+    },
     email: {
         type: String,
         required: true,
@@ -38,14 +42,25 @@ const UserSchema = mongoose.Schema({
     type: {
         type: String,
         default: 'user'
+    },
+    push_subscribe: {
+        type: Boolean,
+        default: false
+    },
+    push_endpoint: {
+        type: String,
+        default: ''
+    },
+    push_key_p256dh: {
+        type: String,
+        default: ''
+    },
+    push_key_auth: {
+        type: String,
+        default: ''
     }
 },{
     versionKey: false
 });
-
-UserSchema.virtual('fullname').get(function(){
-    return this.lastname + ' ' + this.firstname + ' ' + this.middlename;
-});
-
 
 const User = module.exports = mongoose.model('User', UserSchema);
