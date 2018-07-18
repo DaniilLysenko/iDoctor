@@ -4,32 +4,6 @@ const bot = new TelegramBot(token, {polling: true});
 const axios = require('axios');
 const key = "AIzaSyCLs7NlRy_CqNBjoMaSWDDjZg4-iLPeY_s";
 
-var queue = [];
-var queueProcessing = false;
-
-function queueRequest(text) {
-    queue.push(text);
-    if (queueProcessing) {
-        return;
-    }
-    queueProcessing = true;
-    processQueue();
-}
-
-function processQueue() {
-    if (queue.length == 0) {
-        queueProcessing = false;
-        return;
-    }
-    var current = queue.shift();
-    request(currentRequest, function(error, response, body) {
-        if (error || response.body.error) {
-            console.log("Error sending messages!");
-        }
-        processQueue();
-    });
-}
-
 bot.on('message', function (msg) {
     const chatId = msg.chat.id;
     axios.post(`http://localhost:4000/pharmacy/simptoms`,{msg: msg.text.toLowerCase()})
